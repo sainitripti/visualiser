@@ -1,4 +1,4 @@
-import { colors, file, boxData, coronalCube } from './utils.js';
+import { colors, file, coronalCube } from './utils.js';
 
 // Setup renderer
 const container = document.getElementById('coronal-container');
@@ -68,7 +68,7 @@ loader
 
     const box = {
       center: stack.worldCenter().clone(),
-      halfDimensions: new THREE.Vector3(lpsDims.x + 10, lpsDims.y + 10, lpsDims.z + 10),
+      halfDimensions: new THREE.Vector3(lpsDims.x - 55, lpsDims.y - 55, lpsDims.z - 55),
     };
 
     // init and zoom

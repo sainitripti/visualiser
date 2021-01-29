@@ -1,0 +1,32 @@
+.sidebar {
+  width: 9%;
+  height: 100%;
+  float: left;
+  background-color: #fff;
+  margin:0.5%;
+  border: 1px solid #eee;
+  font-size: 14px;
+  color: #eee;
+  padding: 0;
+}
+
+.sidebar a {
+	display: block;
+	color: #888;
+	padding: 0.5em;
+	text-decoration: none;
+}
+
+.sidebar a:hover {
+	text-decoration: none;
+	background-color: #eee;
+	color: #888;
+}
+
+.sidebar a:selected {
+	text-decoration: none;
+	background-color: blue;
+	color: #888;
+}
+
+/*# sourceMappingURL=/navigation-sidebar.e6213fef.css.map */

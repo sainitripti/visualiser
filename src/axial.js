@@ -1,4 +1,4 @@
-import { colors, file, boxData, generateGeometry, axialCube } from './utils.js';
+import { colors, file, axialCube } from './utils.js';
 
 // Setup renderer
 const container = document.getElementById('axial-container');
@@ -68,7 +68,7 @@ loader
 
     const box = {
       center: stack.worldCenter().clone(),
-      halfDimensions: new THREE.Vector3(lpsDims.x + 10, lpsDims.y + 10, lpsDims.z + 10),
+      halfDimensions: new THREE.Vector3(lpsDims.x-70, lpsDims.y-70, lpsDims.z-70),
     };
 
     // init and zoom

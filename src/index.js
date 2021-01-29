@@ -1,4 +1,4 @@
-import { colors, file, boxData, generateGeometry, cube } from './utils.js';
+import { colors, file, cube } from './utils.js';
 
 // Setup renderer
 const container = document.getElementById('container');
@@ -96,21 +96,4 @@ const gui = stackHelper => {
     .add(stackHelper.slice, 'interpolation', 0, 1)
     .step(1)
     .listen();
-
-  const boxFolder = gui.addFolder( 'Box Geometry' );
-
-  boxFolder.add( boxData, 'width', 1, 100 ).onChange( generateGeometry );
-  boxFolder.add( boxData, 'height', 1, 100 ).onChange( generateGeometry );
-  boxFolder.add( boxData, 'depth', 1, 100 ).onChange( generateGeometry );
-
-  boxFolder.add( boxData, 'widthSegments', 1, 10 ).step( 1 ).onChange( generateGeometry );
-  boxFolder.add( boxData, 'heightSegments', 1, 10 ).step( 1 ).onChange( generateGeometry );
-  boxFolder.add( boxData, 'depthSegments', 1, 10 ).step( 1 ).onChange( generateGeometry );
-
-  boxFolder.add( boxData, 'rotateX', 0, 360 ).onChange( generateGeometry );
-  boxFolder.add( boxData, 'rotateY', 0, 360 ).onChange( generateGeometry );
-  boxFolder.add( boxData, 'rotateZ', 0, 360 ).onChange( generateGeometry );
-  boxFolder.add( boxData , 'positionX', -100, 100 ).onChange( generateGeometry );
-  boxFolder.add( boxData, 'positionY', -100, 100 ).onChange( generateGeometry );
-  boxFolder.add( boxData, 'positionZ', -100, 100 ).onChange( generateGeometry );
 };

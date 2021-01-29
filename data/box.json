@@ -1,0 +1,16 @@
+{
+	"boxData" : {
+		"width" : 50,
+	    "height" : 50,
+	    "depth" : 50,
+	    "widthSegments" : 1,
+	    "heightSegments" : 1,
+	    "depthSegments" : 1,
+	    "rotateX" : 0,
+	    "rotateY" : 0,
+	    "rotateZ" : 0, 
+	    "positionX" : 0,
+	    "positionY" : 0,
+	    "positionZ": 0
+	}
+}

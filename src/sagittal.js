@@ -1,4 +1,4 @@
-import { colors, file, boxData, sagittalCube } from './utils.js';
+import { colors, file, sagittalCube } from './utils.js';
 
 // Setup renderer
 const container = document.getElementById('sagittal-container');
@@ -68,7 +68,7 @@ loader
 
     const box = {
       center: stack.worldCenter().clone(),
-      halfDimensions: new THREE.Vector3(lpsDims.x + 10, lpsDims.y + 10, lpsDims.z + 10),
+      halfDimensions: new THREE.Vector3(lpsDims.x - 50, lpsDims.y - 50, lpsDims.z - 50),
     };
 
     // init and zoom
