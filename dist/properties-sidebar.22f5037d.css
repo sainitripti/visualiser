@@ -1,0 +1,111 @@
+#properties-sidebar {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 20%;
+    background: #eee;
+    overflow: auto;
+    font-size:14px;
+}
+
+.TabbedPanel {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+.TabbedPanel .Tabs {
+    background-color: #ddd;
+    border-top: 1px solid #ccc;
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+.TabbedPanel .Tabs .Tab {
+    padding: 10px;
+    vertical-align: middle;
+    text-transform: uppercase;
+
+    cursor: default;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.TabbedPanel .Tab {
+    color: #aaa;
+    border-right: 1px solid #ccc;
+}
+
+.TabbedPanel .Tab.selected {
+    color: #888;
+    background-color: #eee;
+}
+
+#properties-sidebar .Panel {
+    color: #888;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+#properties-sidebar .Row {
+    min-height: 15px;
+    margin-bottom: 5px;
+}
+
+#properties-sidebar .Row .Text {
+    cursor: default;
+    display: inline-block;
+    vertical-align: middle;
+    width: 90px;
+    text-transform: capitalize;
+}
+
+#properties-sidebar .Row .Heading {
+  width: 100%;
+  padding-bottom: 5px;
+}
+
+input, textarea {
+    border: 1px solid transparent;
+    color: #444;
+    outline: none;
+}
+
+.Input {
+    border: 1px solid transparent;
+    left: 100px;
+    width: 50px;
+    vertical-align: middle;
+}
+
+button {
+    color: #555;
+    background-color: #ddd;
+    border: 0px;
+    margin: 0px;
+    padding: 5px 8px;
+    text-transform: uppercase;
+    cursor: pointer;
+    outline: none;
+    position: relative;
+}
+
+.Button {
+    margin: 0px 5px;
+}
+
+
+
+/*# sourceMappingURL=/properties-sidebar.22f5037d.css.map */

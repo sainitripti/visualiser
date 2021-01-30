@@ -2,8 +2,9 @@ import { colors, file, geometry, material } from '../utils.js';
 
 export default class LessonOnePreviewCard {
 
-  constructor(id, stackHelperOrientation, cameraZoomInFactor, cameraOrientation) {
+  constructor(id, guiId, stackHelperOrientation, cameraZoomInFactor, cameraOrientation) {
     this.id = id;
+    this.guiId = guiId;
     this.cube = new THREE.Mesh( geometry, material );
     this.stackHelperOrientation = stackHelperOrientation;
     this.cameraZoomInFactor = cameraZoomInFactor;
@@ -83,7 +84,7 @@ export default class LessonOnePreviewCard {
         stackHelper.orientation = Number(this.stackHelperOrientation);
         scene.add(stackHelper);
 
-        //gui(stackHelper);
+        gui(stackHelper);
 
         // center camera and interactor to center of bouding box
         // for nicer experience
@@ -131,5 +132,64 @@ export default class LessonOnePreviewCard {
     };
 
     animate();
+
+    // GUI
+    const gui = stackHelper => {
+    const gui = new dat.GUI({
+      autoPlace: false,
+    });
+
+    const customContainer = document.getElementById(this.guiId);
+    customContainer.appendChild(gui.domElement);
+    const camUtils = {
+      invertRows: false,
+      invertColumns: false,
+      rotate45: false,
+      rotate: 0,
+      orientation: 'axial',
+      convention: 'radio',
+    };
+
+    // camera
+    const cameraFolder = gui.addFolder('Camera');
+    const invertRows = cameraFolder.add(camUtils, 'invertRows');
+    invertRows.onChange(() => {
+      camera.invertRows();
+    });
+
+    const invertColumns = cameraFolder.add(camUtils, 'invertColumns');
+    invertColumns.onChange(() => {
+      camera.invertColumns();
+    });
+
+    const rotate45 = cameraFolder.add(camUtils, 'rotate45');
+    rotate45.onChange(() => {
+      camera.rotate();
+    });
+
+    cameraFolder
+      .add(camera, 'angle', 0, 360)
+      .step(1)
+      .listen();
+
+    const conventionUpdate = cameraFolder.add(camUtils, 'convention', ['radio', 'neuro']);
+    conventionUpdate.onChange(value => {
+      camera.convention = value;
+      camera.update();
+      camera.fitBox(2);
+    });
+
+    const stackFolder = gui.addFolder('Stack');
+    stackFolder
+      .add(stackHelper, 'index', 0, stackHelper.stack.dimensionsIJK.z - 1)
+      .step(1)
+      .listen();
+    stackFolder
+      .add(stackHelper.slice, 'interpolation', 0, 1)
+      .step(1)
+      .listen();
+
+  };
+
   }
 }

@@ -1,6 +1,7 @@
 import LessonOnePreviewCard from './LessonOnePreviewCard.js';
+import BoxGeometryPanel from './BoxGeometryPanel.js';
 
-let boxData = {
+var boxData = {
     width: 50,
     height: 50,
     depth: 50,
@@ -15,23 +16,51 @@ let boxData = {
     positionZ: 0
 };
 
-fetch("..//..//data//box.json")
+fetch("https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/box.json")
 .then(response => {
    return response.json();
 })
 .then(data => {
-  boxData = data["boxData"];
-  console.log("Data: " + boxData);
+  boxData = data["boxData"];   
+  updateGeometries();
 });
 
-var axial = new LessonOnePreviewCard("axial-container", "0", "70", "axial");
-var sagittal = new LessonOnePreviewCard("sagittal-container", "1", "50", "sagittal");
-var coronal = new LessonOnePreviewCard("coronal-container", "2", "55", "coronal");
+var axial = new LessonOnePreviewCard("axial-container", "axial-gui-container", "0", "70", "axial");
+var sagittal = new LessonOnePreviewCard("sagittal-container", "sagittal-gui-container", "1", "50", "sagittal");
+var coronal = new LessonOnePreviewCard("coronal-container", "coronal-gui-container", "2", "55", "coronal");
 
-axial.generateGeometry(boxData);
-sagittal.generateGeometry(boxData);
-coronal.generateGeometry(boxData);
+function updateGeometries()
+{
+  axial.generateGeometry(boxData);
+  sagittal.generateGeometry(boxData);
+  coronal.generateGeometry(boxData);
+}
 
-axial.run();
-sagittal.run();
-coronal.run();
+function render()
+{ 
+  axial.run();
+  sagittal.run();
+  coronal.run();
+}
+
+
+updateGeometries();
+render();
+
+const boxId = "l1";
+var boxGeometryPanel = new BoxGeometryPanel(boxData,boxId);
+boxGeometryPanel.render();
+
+function handleBoxGeometryChange(e)
+{
+  // Remove boxId appended at end of each Id
+  var property = e.target.id.slice(0,-boxId.length);
+  //Update boxData
+  boxData[property] = e.target.value;
+  updateGeometries();
+}
+
+const boxGeometryL1 = document.getElementById("boxgeometry"+boxId);
+const properties = ["width","height","depth", "rotateX", "rotateY", "rotateZ", "positionX", "positionY", "positionZ"];
+properties.forEach(property => document.getElementById(property+boxId)
+  .addEventListener("change", handleBoxGeometryChange));
