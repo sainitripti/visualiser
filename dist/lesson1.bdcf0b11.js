@@ -124,11 +124,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.generateGeometry = generateGeometry;
-exports.sagittalCube = exports.coronalCube = exports.axialCube = exports.cube = exports.material = exports.geometry = exports.boxData = exports.colors = exports.file = void 0;
+exports.sagittalCube = exports.coronalCube = exports.axialCube = exports.cube = exports.material = exports.geometry = exports.boxData = exports.colors = exports.file4 = exports.file = void 0;
 //export const file = 'https://cdn.rawgit.com/FNNDSC/data/master/nifti/adi_brain/adi_brain.nii.gz';
 //export const file = '..//data//adi_brain.nii.gz';
 var file = 'https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/adi_brain.nii.gz';
 exports.file = file;
+var file4 = 'https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/pat0.nii.gz';
+exports.file4 = file4;
 var colors = {
   red: 0xff0000,
   lightGrey: 0xffffff
@@ -795,7 +797,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53290" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61192" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

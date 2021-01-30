@@ -124,11 +124,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.generateGeometry = generateGeometry;
-exports.sagittalCube = exports.coronalCube = exports.axialCube = exports.cube = exports.material = exports.geometry = exports.boxData = exports.colors = exports.file = void 0;
+exports.sagittalCube = exports.coronalCube = exports.axialCube = exports.cube = exports.material = exports.geometry = exports.boxData = exports.colors = exports.file4 = exports.file = void 0;
 //export const file = 'https://cdn.rawgit.com/FNNDSC/data/master/nifti/adi_brain/adi_brain.nii.gz';
 //export const file = '..//data//adi_brain.nii.gz';
 var file = 'https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/adi_brain.nii.gz';
 exports.file = file;
+var file4 = 'https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/pat0.nii.gz';
+exports.file4 = file4;
 var colors = {
   red: 0xff0000,
   lightGrey: 0xffffff
@@ -217,7 +219,7 @@ function gui() {
 }
 
 ;
-},{}],"src/js/LessonOnePreviewCard.js":[function(require,module,exports) {
+},{}],"src/js/LessonFourPreviewCard.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -233,9 +235,9 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var LessonOnePreviewCard = /*#__PURE__*/function () {
-  function LessonOnePreviewCard(id, guiId, stackHelperOrientation, cameraZoomInFactor, cameraOrientation) {
-    _classCallCheck(this, LessonOnePreviewCard);
+var LessonFourPreviewCard = /*#__PURE__*/function () {
+  function LessonFourPreviewCard(id, guiId, stackHelperOrientation, cameraZoomInFactor, cameraOrientation) {
+    _classCallCheck(this, LessonFourPreviewCard);
 
     this.id = id;
     this.guiId = guiId;
@@ -245,7 +247,7 @@ var LessonOnePreviewCard = /*#__PURE__*/function () {
     this.cameraOrientation = cameraOrientation;
   }
 
-  _createClass(LessonOnePreviewCard, [{
+  _createClass(LessonFourPreviewCard, [{
     key: "generateGeometry",
     value: function generateGeometry(box) {
       this.cube.scale.x = box.width;
@@ -296,7 +298,7 @@ var LessonOnePreviewCard = /*#__PURE__*/function () {
       window.addEventListener('resize', onWindowResize, false); // Load image data
 
       var loader = new AMI.VolumeLoader(container);
-      loader.load(_utils.file).then(function () {
+      loader.load(_utils.file4).then(function () {
         var series = loader.data[0].mergeSeries(loader.data);
         var stack = series[0].stack[0];
         loader.free();
@@ -383,14 +385,14 @@ var LessonOnePreviewCard = /*#__PURE__*/function () {
     }
   }]);
 
-  return LessonOnePreviewCard;
+  return LessonFourPreviewCard;
 }();
 
-exports.default = LessonOnePreviewCard;
+exports.default = LessonFourPreviewCard;
 },{"../utils.js":"src/utils.js"}],"src/js/lesson4.js":[function(require,module,exports) {
 "use strict";
 
-var _LessonOnePreviewCard = _interopRequireDefault(require("./LessonOnePreviewCard.js"));
+var _LessonFourPreviewCard = _interopRequireDefault(require("./LessonFourPreviewCard.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -411,12 +413,11 @@ var boxData = {
 fetch("https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/box.json").then(function (response) {
   return response.json();
 }).then(function (data) {
-  boxData = data["boxData"];
-  updateGeometries();
+  boxData = data["boxData"]; //updateGeometries();
 });
-var axial = new _LessonOnePreviewCard.default("axial-container", "axial-gui-container", "0", "70", "axial");
-var sagittal = new _LessonOnePreviewCard.default("sagittal-container", "sagittal-gui-container", "1", "50", "sagittal");
-var coronal = new _LessonOnePreviewCard.default("coronal-container", "coronal-gui-container", "2", "55", "coronal");
+var axial = new _LessonFourPreviewCard.default("axial-container", "axial-gui-container", "2", "20", "axial");
+var sagittal = new _LessonFourPreviewCard.default("sagittal-container", "sagittal-gui-container", "0", "40", "sagittal");
+var coronal = new _LessonFourPreviewCard.default("coronal-container", "coronal-gui-container", "1", "25", "coronal");
 
 function updateGeometries() {
   axial.generateGeometry(boxData);
@@ -428,9 +429,9 @@ function render() {
   axial.run();
   sagittal.run();
   coronal.run();
-}
+} //updateGeometries();
 
-updateGeometries();
+
 render();
 /*
 const boxId = "l1";
@@ -451,7 +452,7 @@ const properties = ["width","height","depth", "rotateX", "rotateY", "rotateZ", "
 properties.forEach(property => document.getElementById(property+boxId)
   .addEventListener("change", handleBoxGeometryChange));
 */
-},{"./LessonOnePreviewCard.js":"src/js/LessonOnePreviewCard.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./LessonFourPreviewCard.js":"src/js/LessonFourPreviewCard.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -479,7 +480,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53290" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61192" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

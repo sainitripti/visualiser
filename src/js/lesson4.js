@@ -1,4 +1,4 @@
-import LessonOnePreviewCard from './LessonOnePreviewCard.js';
+import LessonFourPreviewCard from './LessonFourPreviewCard.js';
 
 var boxData = {
     width: 50,
@@ -21,12 +21,13 @@ fetch("https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/box.json")
 })
 .then(data => {
   boxData = data["boxData"];   
-  updateGeometries();
+  //updateGeometries();
 });
 
-var axial = new LessonOnePreviewCard("axial-container", "axial-gui-container", "0", "70", "axial");
-var sagittal = new LessonOnePreviewCard("sagittal-container", "sagittal-gui-container", "1", "50", "sagittal");
-var coronal = new LessonOnePreviewCard("coronal-container", "coronal-gui-container", "2", "55", "coronal");
+var axial = new LessonFourPreviewCard("axial-container", "axial-gui-container", "2", "20", "axial");
+var sagittal = new LessonFourPreviewCard("sagittal-container", "sagittal-gui-container", "0", "40", "sagittal");
+var coronal = new LessonFourPreviewCard("coronal-container", "coronal-gui-container", "1", "25", "coronal");
+
 
 function updateGeometries()
 {
@@ -43,7 +44,7 @@ function render()
 }
 
 
-updateGeometries();
+//updateGeometries();
 render();
 /*
 const boxId = "l1";
