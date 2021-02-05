@@ -124,13 +124,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.generateGeometry = generateGeometry;
-exports.sagittalCube = exports.coronalCube = exports.axialCube = exports.cube = exports.material = exports.geometry = exports.boxData = exports.colors = exports.file4 = exports.file = void 0;
+exports.sagittalCube = exports.coronalCube = exports.axialCube = exports.cube = exports.material = exports.geometry = exports.boxData = exports.colors = exports.annotation = exports.file4 = exports.file = void 0;
 //export const file = 'https://cdn.rawgit.com/FNNDSC/data/master/nifti/adi_brain/adi_brain.nii.gz';
 //export const file = '..//data//adi_brain.nii.gz';
 var file = 'https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/adi_brain.nii.gz';
 exports.file = file;
-var file4 = 'https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/training_sa_crop_pat0.nii.gz';
+var file4 = 'https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/training_sa_crop_pat0_transformed.nii.gz';
 exports.file4 = file4;
+var annotation = 'https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/pat0.nii.gz';
+exports.annotation = annotation;
 var colors = {
   red: 0xff0000,
   lightGrey: 0xffffff
@@ -277,6 +279,7 @@ var LessonFourPreviewCard = /*#__PURE__*/function () {
       container.appendChild(renderer.domElement); // Create scene
 
       var scene = new THREE.Scene();
+      var scene2 = new THREE.Scene();
       scene.add(this.cube); // Camera
 
       var camera = new AMI.OrthographicCamera(container.clientWidth / -2, container.clientWidth / 2, container.clientHeight / 2, container.clientHeight / -2, 0.1, 10000); // Setup controls
@@ -332,10 +335,46 @@ var LessonFourPreviewCard = /*#__PURE__*/function () {
         window.console.log('oops... something went wrong...');
         window.console.log(error);
       });
+      var loader2 = new AMI.VolumeLoader(container);
+      loader2.load(_utils.annotation).then(function () {
+        var series = loader2.data[0].mergeSeries(loader.data);
+        var stack = series[0].stack[0];
+        loader2.free();
+        var stackHelper = new AMI.StackHelper(stack);
+        stackHelper.bbox.visible = false;
+        stackHelper.border.color = _utils.colors.red;
+        stackHelper.orientation = Number(_this.stackHelperOrientation);
+        scene.add(stackHelper);
+        gui(stackHelper); // center camera and interactor to center of bouding box
+        // for nicer experience
+        // set camera
+
+        var worldbb = stack.worldBoundingBox();
+        var lpsDims = new THREE.Vector3(worldbb[1] - worldbb[0], worldbb[3] - worldbb[2], worldbb[5] - worldbb[4]);
+        var box = {
+          center: stack.worldCenter().clone(),
+          halfDimensions: new THREE.Vector3(lpsDims.x - _this.cameraZoomInFactor, lpsDims.y - _this.cameraZoomInFactor, lpsDims.z - _this.cameraZoomInFactor)
+        }; // init and zoom
+
+        var canvas = {
+          width: container.clientWidth,
+          height: container.clientHeight
+        };
+        camera.directions = [stack.xCosine, stack.yCosine, stack.zCosine];
+        camera.box = box;
+        camera.canvas = canvas;
+        camera.orientation = _this.cameraOrientation;
+        camera.update();
+        camera.fitBox(2);
+      }).catch(function (error) {
+        window.console.log('oops... something went wrong...');
+        window.console.log(error);
+      });
 
       var animate = function animate() {
         controls.update();
-        renderer.render(scene, camera);
+        renderer.render(scene, camera); //renderer.render(scene2, camera);
+
         requestAnimationFrame(function () {
           animate();
         });
@@ -480,7 +519,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54320" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55141" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
