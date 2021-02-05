@@ -36246,15 +36246,23 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 var container, stats;
 var camera, controls, scene, renderer;
-init(); //animate();
+init();
+animate();
 
 function init() {
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0x000000);
-  camera = new THREE.PerspectiveCamera(15, window.innerWidth / window.innerHeight, 0.01, 40);
-  camera.position.x = 0.4;
-  camera.position.z = -2;
-  camera.up.set(0, 0, 1);
+  /*
+  	camera = new THREE.PerspectiveCamera( 15, window.innerWidth / window.innerHeight, 0.01, 40 );
+  	camera.position.x = 0.4;
+  	camera.position.z = - 2;
+  	camera.up.set( 0, 0, 1 );
+  */
+
+  camera = new THREE.PerspectiveCamera(120, window.innerWidth / window.innerHeight, 0.001, 500);
+  camera.position.x = 100;
+  camera.position.y = 100;
+  camera.position.z = 250;
   scene.add(camera);
   renderer = new THREE.WebGLRenderer({
     antialias: true
@@ -36263,7 +36271,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
   var loader = new _PCDLoader.PCDLoader();
-  loader.load('https://ghcdn.rawgit.org/mrdoob/three.js/master/examples/models/pcd/binary/Zaghetto.pcd', function (points) {
+  loader.load('https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/1.pcd', function (points) {
     scene.add(points);
     var center = points.geometry.boundingSphere.center;
     controls.target.set(center.x, center.y, center.z);
@@ -36279,7 +36287,7 @@ function init() {
   controls.panSpeed = 0.2;
   controls.staticMoving = true;
   controls.minDistance = 0.3;
-  controls.maxDistance = 0.3 * 100;
+  controls.maxDistance = 0.3 * 600;
   stats = new _statsModule.default();
   container.appendChild(stats.dom);
   window.addEventListener('resize', onWindowResize);
@@ -36294,7 +36302,7 @@ function onWindowResize() {
 }
 
 function keyboard(ev) {
-  var points = scene.getObjectByName('Zaghetto.pcd');
+  var points = scene.getObjectByName('1.pcd');
 
   switch (ev.key || String.fromCharCode(ev.keyCode || ev.charCode)) {
     case '+':
@@ -36334,7 +36342,7 @@ function animate() {
 }
 
 function animatePoints(ts) {
-  var points = scene.getObjectByName('Zaghetto.pcd');
+  var points = scene.getObjectByName('1.pcd');
   var center = new THREE.Vector3(0, 0, 0);
   var dist = new THREE.Vector3(points.position.x, points.position.y, points.position.z).sub(center);
   var size = 50.0;
@@ -36375,7 +36383,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63463" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64100" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
