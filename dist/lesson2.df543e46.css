@@ -1,4 +1,4 @@
-.TabbedPanel {
+#properties-sidebar {
     position: absolute;
     right: 0;
     top: 0;
@@ -15,7 +15,9 @@
     -ms-user-select: none;
     -o-user-select: none;
     user-select: none;
+    position: relative;
     display: block;
+    width: 100%;
 }
 
 .TabbedPanel .Tabs {
@@ -57,12 +59,12 @@
     user-select: none;
 }
 
-.TabbedPanel .Row {
+#properties-sidebar .Row {
     min-height: 15px;
     margin-bottom: 5px;
 }
 
-.TabbedPanel .Row .Text {
+#properties-sidebar .Row .Text {
     cursor: default;
     display: inline-block;
     vertical-align: middle;
@@ -70,7 +72,7 @@
     text-transform: capitalize;
 }
 
-.TabbedPanel .Row .Heading {
+#properties-sidebar .Row .Heading {
   width: 100%;
   padding-bottom: 5px;
 }
@@ -104,3 +106,6 @@ button {
     margin: 0px 5px;
 }
 
+
+
+/*# sourceMappingURL=/lesson2.df543e46.css.map */

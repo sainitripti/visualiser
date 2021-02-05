@@ -221,7 +221,7 @@ function gui() {
 }
 
 ;
-},{}],"src/js/LessonFourPreviewCard.js":[function(require,module,exports) {
+},{}],"src/js/LessonTwoPreviewCard.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -237,19 +237,16 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var LessonFourPreviewCard = /*#__PURE__*/function () {
-  function LessonFourPreviewCard(id, guiId, stackHelperOrientation, cameraZoomInFactor, cameraOrientation) {
-    _classCallCheck(this, LessonFourPreviewCard);
+var LessonTwoPreviewCard = /*#__PURE__*/function () {
+  function LessonTwoPreviewCard(id, guiId) {
+    _classCallCheck(this, LessonTwoPreviewCard);
 
     this.id = id;
     this.guiId = guiId;
     this.cube = new THREE.Mesh(_utils.geometry, _utils.material);
-    this.stackHelperOrientation = stackHelperOrientation;
-    this.cameraZoomInFactor = cameraZoomInFactor;
-    this.cameraOrientation = cameraOrientation;
   }
 
-  _createClass(LessonFourPreviewCard, [{
+  _createClass(LessonTwoPreviewCard, [{
     key: "generateGeometry",
     value: function generateGeometry(box) {
       this.cube.scale.x = box.width;
@@ -276,111 +273,50 @@ var LessonFourPreviewCard = /*#__PURE__*/function () {
       renderer.setSize(container.offsetWidth, container.offsetHeight);
       renderer.setClearColor(_utils.colors.lightGrey, 1);
       renderer.setPixelRatio(window.devicePixelRatio);
-      container.appendChild(renderer.domElement); // Create scene
-
+      container.appendChild(renderer.domElement);
       var scene = new THREE.Scene();
-      var scene2 = new THREE.Scene();
-      scene.add(this.cube); // Camera
-
-      var camera = new AMI.OrthographicCamera(container.clientWidth / -2, container.clientWidth / 2, container.clientHeight / 2, container.clientHeight / -2, 0.1, 10000); // Setup controls
-
-      var controls = new AMI.TrackballOrthoControl(camera, container);
-      controls.staticMoving = true;
-      controls.noRotate = true;
-      camera.controls = controls; // Resize canvas when the window resizes
+      var camera = new THREE.PerspectiveCamera(45, container.offsetWidth / container.offsetHeight, 0.1, 1000);
+      camera.position.x = 0;
+      camera.position.y = 0;
+      camera.position.z = 400;
+      var controls = new AMI.TrackballControl(camera, container);
 
       var onWindowResize = function onWindowResize() {
-        camera.canvas = {
-          width: container.offsetWidth,
-          height: container.offsetHeight
-        };
-        camera.fitBox(2);
+        camera.aspect = container.offsetWidth / container.offsetHeight;
+        camera.updateProjectionMatrix();
         renderer.setSize(container.offsetWidth, container.offsetHeight);
       };
 
-      window.addEventListener('resize', onWindowResize, false); // Load image data
-
+      window.addEventListener('resize', onWindowResize, false);
       var loader = new AMI.VolumeLoader(container);
-      loader.load(_utils.file4).then(function () {
+      loader.load(_utils.file).then(function () {
         var series = loader.data[0].mergeSeries(loader.data);
         var stack = series[0].stack[0];
         loader.free();
         var stackHelper = new AMI.StackHelper(stack);
         stackHelper.bbox.visible = false;
         stackHelper.border.color = _utils.colors.red;
-        stackHelper.orientation = Number(_this.stackHelperOrientation);
         scene.add(stackHelper);
-        gui(stackHelper); // center camera and interactor to center of bouding box
-        // for nicer experience
-        // set camera
-
-        var worldbb = stack.worldBoundingBox();
-        var lpsDims = new THREE.Vector3(worldbb[1] - worldbb[0], worldbb[3] - worldbb[2], worldbb[5] - worldbb[4]);
-        var box = {
-          center: stack.worldCenter().clone(),
-          halfDimensions: new THREE.Vector3(lpsDims.x - _this.cameraZoomInFactor, lpsDims.y - _this.cameraZoomInFactor, lpsDims.z - _this.cameraZoomInFactor)
-        }; // init and zoom
-
-        var canvas = {
-          width: container.clientWidth,
-          height: container.clientHeight
-        };
-        camera.directions = [stack.xCosine, stack.yCosine, stack.zCosine];
-        camera.box = box;
-        camera.canvas = canvas;
-        camera.orientation = _this.cameraOrientation;
-        camera.update();
-        camera.fitBox(2);
+        gui(stackHelper);
+        var centerLPS = stackHelper.stack.worldCenter();
+        camera.lookAt(centerLPS.x, centerLPS.y, centerLPS.z);
+        camera.updateProjectionMatrix();
+        controls.target.set(centerLPS.x, centerLPS.y, centerLPS.z);
       }).catch(function (error) {
         window.console.log('oops... something went wrong...');
         window.console.log(error);
       });
-      var loader2 = new AMI.VolumeLoader(container);
-      loader2.load(_utils.annotation).then(function () {
-        var series = loader2.data[0].mergeSeries(loader.data);
-        var stack = series[0].stack[0];
-        loader2.free();
-        var stackHelper = new AMI.StackHelper(stack);
-        stackHelper.bbox.visible = false;
-        stackHelper.border.color = _utils.colors.red;
-        stackHelper.orientation = Number(_this.stackHelperOrientation);
-        scene.add(stackHelper);
-        gui(stackHelper); // center camera and interactor to center of bouding box
-        // for nicer experience
-        // set camera
-
-        var worldbb = stack.worldBoundingBox();
-        var lpsDims = new THREE.Vector3(worldbb[1] - worldbb[0], worldbb[3] - worldbb[2], worldbb[5] - worldbb[4]);
-        var box = {
-          center: stack.worldCenter().clone(),
-          halfDimensions: new THREE.Vector3(lpsDims.x - _this.cameraZoomInFactor, lpsDims.y - _this.cameraZoomInFactor, lpsDims.z - _this.cameraZoomInFactor)
-        }; // init and zoom
-
-        var canvas = {
-          width: container.clientWidth,
-          height: container.clientHeight
-        };
-        camera.directions = [stack.xCosine, stack.yCosine, stack.zCosine];
-        camera.box = box;
-        camera.canvas = canvas;
-        camera.orientation = _this.cameraOrientation;
-        camera.update();
-        camera.fitBox(2);
-      }).catch(function (error) {
-        window.console.log('oops... something went wrong...');
-        window.console.log(error);
-      });
+      scene.add(this.cube);
 
       var animate = function animate() {
         controls.update();
-        renderer.render(scene, camera); //renderer.render(scene2, camera);
-
+        renderer.render(scene, camera);
         requestAnimationFrame(function () {
           animate();
         });
       };
 
-      animate(); // GUI
+      animate();
 
       var gui = function gui(stackHelper) {
         var gui = new dat.GUI({
@@ -393,30 +329,9 @@ var LessonFourPreviewCard = /*#__PURE__*/function () {
           invertColumns: false,
           rotate45: false,
           rotate: 0,
-          orientation: 'axial',
+          orientation: 'default',
           convention: 'radio'
-        }; // camera
-
-        var cameraFolder = gui.addFolder('Camera');
-        var invertRows = cameraFolder.add(camUtils, 'invertRows');
-        invertRows.onChange(function () {
-          camera.invertRows();
-        });
-        var invertColumns = cameraFolder.add(camUtils, 'invertColumns');
-        invertColumns.onChange(function () {
-          camera.invertColumns();
-        });
-        var rotate45 = cameraFolder.add(camUtils, 'rotate45');
-        rotate45.onChange(function () {
-          camera.rotate();
-        });
-        cameraFolder.add(camera, 'angle', 0, 360).step(1).listen();
-        var conventionUpdate = cameraFolder.add(camUtils, 'convention', ['radio', 'neuro']);
-        conventionUpdate.onChange(function (value) {
-          camera.convention = value;
-          camera.update();
-          camera.fitBox(2);
-        });
+        };
         var stackFolder = gui.addFolder('Stack');
         stackFolder.add(stackHelper, 'index', 0, stackHelper.stack.dimensionsIJK.z - 1).step(1).listen();
         stackFolder.add(stackHelper.slice, 'interpolation', 0, 1).step(1).listen();
@@ -424,17 +339,18 @@ var LessonFourPreviewCard = /*#__PURE__*/function () {
     }
   }]);
 
-  return LessonFourPreviewCard;
+  return LessonTwoPreviewCard;
 }();
 
-exports.default = LessonFourPreviewCard;
-},{"../utils.js":"src/utils.js"}],"src/js/lesson4.js":[function(require,module,exports) {
+exports.default = LessonTwoPreviewCard;
+},{"../utils.js":"src/utils.js"}],"src/js/lesson2.js":[function(require,module,exports) {
 "use strict";
 
-var _LessonFourPreviewCard = _interopRequireDefault(require("./LessonFourPreviewCard.js"));
+var _LessonTwoPreviewCard = _interopRequireDefault(require("./LessonTwoPreviewCard.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//import BoxGeometryPanel from './BoxGeometryPanel.js';
 var boxData = {
   width: 50,
   height: 50,
@@ -452,25 +368,20 @@ var boxData = {
 fetch("https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/box.json").then(function (response) {
   return response.json();
 }).then(function (data) {
-  boxData = data["boxData"]; //updateGeometries();
+  boxData = data["boxData"];
+  updateGeometries();
 });
-var axial = new _LessonFourPreviewCard.default("axial-container", "axial-gui-container", "2", "20", "axial");
-var sagittal = new _LessonFourPreviewCard.default("sagittal-container", "sagittal-gui-container", "0", "40", "sagittal");
-var coronal = new _LessonFourPreviewCard.default("coronal-container", "coronal-gui-container", "1", "25", "coronal");
+var generic = new _LessonTwoPreviewCard.default("3d-container", "3d-gui-container");
 
 function updateGeometries() {
-  axial.generateGeometry(boxData);
-  sagittal.generateGeometry(boxData);
-  coronal.generateGeometry(boxData);
+  generic.generateGeometry(boxData);
 }
 
 function render() {
-  axial.run();
-  sagittal.run();
-  coronal.run();
-} //updateGeometries();
+  generic.run();
+}
 
-
+updateGeometries();
 render();
 /*
 const boxId = "l1";
@@ -491,7 +402,7 @@ const properties = ["width","height","depth", "rotateX", "rotateY", "rotateZ", "
 properties.forEach(property => document.getElementById(property+boxId)
   .addEventListener("change", handleBoxGeometryChange));
 */
-},{"./LessonFourPreviewCard.js":"src/js/LessonFourPreviewCard.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./LessonTwoPreviewCard.js":"src/js/LessonTwoPreviewCard.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -695,5 +606,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","src/js/lesson4.js"], null)
-//# sourceMappingURL=/lesson4.40849733.js.map
+},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","src/js/lesson2.js"], null)
+//# sourceMappingURL=/lesson2.df543e46.js.map

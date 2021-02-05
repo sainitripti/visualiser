@@ -1,4 +1,4 @@
-#properties-sidebar {
+.TabbedPanel {
     position: absolute;
     right: 0;
     top: 0;
@@ -15,9 +15,7 @@
     -ms-user-select: none;
     -o-user-select: none;
     user-select: none;
-    position: relative;
     display: block;
-    width: 100%;
 }
 
 .TabbedPanel .Tabs {
@@ -59,12 +57,12 @@
     user-select: none;
 }
 
-#properties-sidebar .Row {
+.TabbedPanel .Row {
     min-height: 15px;
     margin-bottom: 5px;
 }
 
-#properties-sidebar .Row .Text {
+.TabbedPanel .Row .Text {
     cursor: default;
     display: inline-block;
     vertical-align: middle;
@@ -72,7 +70,7 @@
     text-transform: capitalize;
 }
 
-#properties-sidebar .Row .Heading {
+.TabbedPanel .Row .Heading {
   width: 100%;
   padding-bottom: 5px;
 }

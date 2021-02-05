@@ -33,7 +33,7 @@ body {
   height: 50%;
 }
 
-.outer-container {
+.outer-container-3 {
   width: 31%;
   height: 60%;
   display: inline-block;
@@ -42,12 +42,21 @@ body {
   text-align: center;
 }
 
-.control-outer-container {
+.control-outer-container-3 {
   width: 31%;
   height: 35%;
   display: inline-block;
   margin: 0.5%;
   vertical-align: top;
+}
+
+.outer-container-1 {
+  width: 72%;
+  height: 70%;
+  display: inline-block;
+  margin: 0.5%;
+  box-shadow: 1px 2px 4px 0px rgba(0,0,0,0.25);
+  text-align: center;
 }
 
 .dg.main {
