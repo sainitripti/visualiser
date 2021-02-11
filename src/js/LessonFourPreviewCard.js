@@ -124,58 +124,6 @@ export default class LessonFourPreviewCard {
         window.console.log(error);
       });
 
-    const loader2 = new AMI.VolumeLoader(container);
-    loader2
-      .load(annotation)
-      .then(() => {
-        const series = loader2.data[0].mergeSeries(loader.data);
-        const stack = series[0].stack[0];
-        loader2.free();
-
-        const stackHelper = new AMI.StackHelper(stack);
-        stackHelper.bbox.visible = false;
-        stackHelper.border.color = colors.red;
-        stackHelper.orientation = Number(this.stackHelperOrientation);
-        scene.add(stackHelper);
-
-        gui(stackHelper);
-
-        // center camera and interactor to center of bouding box
-        // for nicer experience
-        // set camera
-        const worldbb = stack.worldBoundingBox();
-        const lpsDims = new THREE.Vector3(
-          worldbb[1] - worldbb[0],
-          worldbb[3] - worldbb[2],
-          worldbb[5] - worldbb[4]
-        );
-
-        const box = {
-          center: stack.worldCenter().clone(),
-          halfDimensions: new THREE.Vector3(
-            lpsDims.x - this.cameraZoomInFactor, 
-            lpsDims.y - this.cameraZoomInFactor, 
-            lpsDims.z - this.cameraZoomInFactor),
-        };
-
-        // init and zoom
-        const canvas = {
-          width: container.clientWidth,
-          height: container.clientHeight,
-        };
-
-        camera.directions = [stack.xCosine, stack.yCosine, stack.zCosine];
-        camera.box = box;
-        camera.canvas = canvas;
-        camera.orientation = this.cameraOrientation;
-        camera.update();
-        camera.fitBox(2);
-      })
-      .catch(error => {
-        window.console.log('oops... something went wrong...');
-        window.console.log(error);
-      });
-
 
     const animate = () => {
       controls.update();
