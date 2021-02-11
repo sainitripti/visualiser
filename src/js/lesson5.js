@@ -22,9 +22,13 @@ function init() {
 	scene.background = new THREE.Color( 0x000000 );
 
 	camera = new THREE.PerspectiveCamera( 120, window.innerWidth / window.innerHeight, 0.001, 500 );
-	camera.position.x = 100;
-	camera.position.y= 100;
-	camera.position.z = 250;
+	camera.position.x = -18;
+	camera.position.y= 133;
+	camera.position.z = 11;
+
+	camera.rotation.x = -.872*57.2957795;
+	camera.rotation.y = 0.117*57.2957795;
+	camera.rotation.z = -2.732*57.2957795;
 
 	scene.add( camera );
 
@@ -39,6 +43,8 @@ function init() {
 	loader.load( 'https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/1.pcd', function ( points ) {
 
 		scene.add( points );
+		points.position.x += 9;
+		points.position.z -= 50;
 
 		const center = points.geometry.boundingSphere.center;
 		controls.target.set( center.x, center.y, center.z );
@@ -46,6 +52,8 @@ function init() {
 		loader.load( 'https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/2.pcd', function ( points2 ) {
 
 			scene.add( points2 );
+			points2.position.x += 40;
+			points2.position.y -= 40;
 
 			const center = points2.geometry.boundingSphere.center;
 			controls.target.set( center.x, center.y, center.z );
@@ -66,6 +74,8 @@ function init() {
 					loader.load( 'https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/4.pcd', function ( points4 ) {
 
 						scene.add( points4 );
+						points4.position.x += 5;
+						points4.position.z += 30;
 						const center = points4.geometry.boundingSphere.center;
 						controls.target.set( center.x, center.y, center.z );
 						controls.update();
@@ -142,7 +152,7 @@ function keyboard( ev ) {
 			points4.material.needsUpdate = true;
 
 			break;
-
+/*
 		case 'z':
 			points.scale.x = points.scale.x + 0.001;
 			points.scale.y = points.scale.y + 0.001;
@@ -153,6 +163,16 @@ function keyboard( ev ) {
 			points.scale.x = points.scale.x - 0.001;
 			points.scale.y = points.scale.y - 0.001;
 			points.scale.z = points.scale.z - 0.001;
+			break;
+*/
+		case 'x':
+			points3.position.x = points3.position.x + 1;
+			break;
+		case 'y':
+			points3.position.y = points3.position.y + 1;
+			break;
+		case 'z':
+			points3.position.z = points3.position.z + 1;
 			break;
 
 	}
