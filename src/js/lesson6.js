@@ -19,6 +19,9 @@ var myStack = {
     interpolation: 1
 };
 
+var file = 'https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/training_sa_crop_pat0_transformed.nii.gz';
+var annotation = 'https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/training_axial_full_pat0-label.nii.gz';
+
 /**
  * Handle mouse down event
  */
@@ -164,8 +167,6 @@ function init() {
 // init threeJS...
 init();
 
-var file = 'https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/training_sa_crop_pat0_transformed.nii.gz';
-var annotation = 'https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/pat0.nii.gz';
 var loader = new AMI.VolumeLoader(threeD);
 loader.load([file, annotation]).then(function() {
     var series = loader.data[0].mergeSeries(loader.data)[0];
