@@ -115,8 +115,6 @@ function init() {
         controls.update();
 
         if (ready) {
-            console.log(camera.position);
-            console.log(camera.up);
             renderer.render(scene, camera);
         }
 

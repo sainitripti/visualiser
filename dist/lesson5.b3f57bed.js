@@ -36259,12 +36259,9 @@ function init() {
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0x000000);
   camera = new THREE.PerspectiveCamera(120, window.innerWidth / window.innerHeight, 0.001, 500);
-  camera.position.x = -18;
-  camera.position.y = 133;
-  camera.position.z = 11;
-  camera.rotation.x = -.872 * 57.2957795;
-  camera.rotation.y = 0.117 * 57.2957795;
-  camera.rotation.z = -2.732 * 57.2957795;
+  camera.position.x = 0;
+  camera.position.y = 0;
+  camera.position.z = 300;
   scene.add(camera);
   threeD = document.getElementById('r3d');
   renderer = new THREE.WebGLRenderer({
@@ -36274,29 +36271,28 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   threeD.appendChild(renderer.domElement);
   var loader = new _PCDLoader.PCDLoader();
-  loader.load('https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/1.pcd', function (points) {
-    scene.add(points);
-    points.position.x += 9;
-    points.position.z -= 50;
+  loader.load('https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/LV.pcd', function (points) {
+    scene.add(points); //points.rotation.x = 4.12;
+    //points.rotation.y = 5.62;
+    //points.rotation.z = 6.00;
+
     var center = points.geometry.boundingSphere.center;
     controls.target.set(center.x, center.y, center.z);
     controls.update();
-    loader.load('https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/2.pcd', function (points2) {
+    loader.load('https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/LA.pcd', function (points2) {
       scene.add(points2);
-      points2.position.x += 40;
-      points2.position.y -= 40;
       var center = points2.geometry.boundingSphere.center;
       controls.target.set(center.x, center.y, center.z);
       controls.update(); //animatePoints(10);
 
-      loader.load('https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/3.pcd', function (points3) {
+      loader.load('https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/RV.pcd', function (points3) {
         scene.add(points3);
         var center = points3.geometry.boundingSphere.center;
         controls.target.set(center.x, center.y, center.z);
         controls.update(); //animatePoints(10);
 
         sleep(500).then(function () {
-          loader.load('https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/4.pcd', function (points4) {
+          loader.load('https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/RA.pcd', function (points4) {
             scene.add(points4);
             points4.position.x += 5;
             points4.position.z += 30;
@@ -36318,7 +36314,7 @@ function init() {
   controls.panSpeed = 0.2;
   controls.staticMoving = true;
   controls.minDistance = 0.3;
-  controls.maxDistance = 0.3 * 600;
+  controls.maxDistance = 0.3 * 800;
   stats = new _statsModule.default();
   container.appendChild(stats.dom);
   window.addEventListener('resize', onWindowResize);
@@ -36333,10 +36329,10 @@ function onWindowResize() {
 }
 
 function keyboard(ev) {
-  var points = scene.getObjectByName('1.pcd');
-  var points2 = scene.getObjectByName('2.pcd');
-  var points3 = scene.getObjectByName('3.pcd');
-  var points4 = scene.getObjectByName('4.pcd');
+  var points = scene.getObjectByName('LV.pcd');
+  var points2 = scene.getObjectByName('LA.pcd');
+  var points3 = scene.getObjectByName('RV.pcd');
+  var points4 = scene.getObjectByName('RA.pcd');
 
   switch (ev.key || String.fromCharCode(ev.keyCode || ev.charCode)) {
     case '+':
@@ -36360,20 +36356,6 @@ function keyboard(ev) {
       points4.material.needsUpdate = true;
       break;
 
-    /*
-    		case 'z':
-    			points.scale.x = points.scale.x + 0.001;
-    			points.scale.y = points.scale.y + 0.001;
-    			points.scale.z = points.scale.z + 0.001;
-    			break;
-    
-    		case 'x':
-    			points.scale.x = points.scale.x - 0.001;
-    			points.scale.y = points.scale.y - 0.001;
-    			points.scale.z = points.scale.z - 0.001;
-    			break;
-    */
-
     case 'x':
       points3.position.x = points3.position.x + 1;
       break;
@@ -36396,10 +36378,10 @@ function animate() {
 }
 
 function animatePoints(ts) {
-  var points = scene.getObjectByName('1.pcd');
-  var points2 = scene.getObjectByName('2.pcd');
-  var points3 = scene.getObjectByName('3.pcd');
-  var points4 = scene.getObjectByName('4.pcd');
+  var points = scene.getObjectByName('LV.pcd');
+  var points2 = scene.getObjectByName('LA.pcd');
+  var points3 = scene.getObjectByName('RV.pcd');
+  var points4 = scene.getObjectByName('RA.pcd');
   var center = new THREE.Vector3(0, 0, 0);
   var dist = new THREE.Vector3(points.position.x, points.position.y, points.position.z).sub(center);
   var size = 50.0;
@@ -36420,7 +36402,8 @@ function animatePoints(ts) {
   points4.scale.y = 1 + Math.sin(dist4.length() / size + ts / 200) * magnitude;
   points4.scale.z = 1 + Math.sin(dist4.length() / size + ts / 200) * magnitude;
   requestAnimationFrame(animatePoints);
-  controls.update();
+  controls.update(); //console.log(points3.position);
+
   renderer.render(scene, camera);
   stats.update();
 }
@@ -36452,7 +36435,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52434" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60688" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
