@@ -1,0 +1,62 @@
+#r3d {
+  background-color: #ffffff;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  position: absolute;
+  width: 90%;
+  height: 100%;
+  overflow:hidden;
+}
+
+#my-gui-container {
+  position: fixed;
+  top: 30px;
+  right: 20px;
+  z-index:1;
+}
+
+.close-button {
+  width: 100% !important;
+}
+
+#my-lut-container {
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 1;
+  color: #2f2f2f;
+  text-align: center;
+}
+
+#my-lut-container > div > .my-tf {
+  position: relative;
+}
+
+#my-lut-min {
+  margin-right: 10px;
+}
+
+#my-lut-max {
+  margin-left: 10px;
+}
+
+#my-lut-container > div {
+  margin-bottom: 10px;
+}
+
+#my-lut-container > div > .my-tf > :first-child {
+  background: repeating-linear-gradient(-45deg, #353535, #353535 5px, black 5px, black 10px);
+}
+
+#my-lut-container > div > .my-tf > :nth-child(2) {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.sidebar {
+  margin-top: 4em;
+}
+
+/*# sourceMappingURL=/lesson6.375edbe9.css.map */

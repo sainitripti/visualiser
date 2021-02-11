@@ -117,79 +117,192 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
-var bundleURL = null;
+})({"src/js/lesson6.js":[function(require,module,exports) {
+/* globals Stats, dat, AMI*/
+// standard global letiables
+var controls;
+var threeD;
+var renderer;
+var stats;
+var camera;
+var scene;
+var vrHelper;
+var lut;
+var ready = false;
+var myStack = {
+  lut: 'random',
+  opacity: 'random',
+  steps: 256,
+  alphaCorrection: 0.5,
+  interpolation: 1
+};
+/**
+ * Handle mouse down event
+ */
 
-function getBundleURLCached() {
-  if (!bundleURL) {
-    bundleURL = getBundleURL();
+function onMouseDown() {
+  if (vrHelper && vrHelper.uniforms) {
+    vrHelper.uniforms.uSteps.value = Math.floor(myStack.steps / 2);
+    vrHelper.interpolation = 0;
   }
-
-  return bundleURL;
 }
+/**
+ * Handle mouse up event
+ */
 
-function getBundleURL() {
-  // Attempt to find the URL of the current script and use that as the base URL
-  try {
-    throw new Error();
-  } catch (err) {
-    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
 
-    if (matches) {
-      return getBaseURL(matches[0]);
+function onMouseUp() {
+  if (vrHelper && vrHelper.uniforms) {
+    vrHelper.uniforms.uSteps.value = myStack.steps;
+    vrHelper.interpolation = myStack.interpolation;
+  }
+}
+/**
+ * Handle window resize event
+ */
+
+
+function onWindowResize() {
+  // update the camera
+  camera.aspect = threeD.offsetWidth / threeD.offsetHeight;
+  camera.updateProjectionMatrix(); // notify the renderer of the size change
+
+  renderer.setSize(threeD.offsetWidth, threeD.offsetHeight);
+}
+/**
+ * Build GUI
+ */
+
+
+function buildGUI() {
+  var gui = new dat.GUI({
+    autoPlace: false
+  });
+  var customContainer = document.getElementById('my-gui-container');
+  customContainer.appendChild(gui.domElement);
+  var stackFolder = gui.addFolder('Settings');
+  var lutUpdate = stackFolder.add(myStack, 'lut', lut.lutsAvailable());
+  lutUpdate.onChange(function (value) {
+    lut.lut = value;
+    vrHelper.uniforms.uTextureLUT.value.dispose();
+    vrHelper.uniforms.uTextureLUT.value = lut.texture;
+  }); // init LUT
+
+  lut.lut = myStack.lut;
+  vrHelper.uniforms.uTextureLUT.value.dispose();
+  vrHelper.uniforms.uTextureLUT.value = lut.texture;
+  var opacityUpdate = stackFolder.add(myStack, 'opacity', lut.lutsAvailable('opacity'));
+  opacityUpdate.onChange(function (value) {
+    lut.lutO = value;
+    vrHelper.uniforms.uTextureLUT.value.dispose();
+    vrHelper.uniforms.uTextureLUT.value = lut.texture;
+  });
+  var stepsUpdate = stackFolder.add(myStack, 'steps', 0, 512).step(1);
+  stepsUpdate.onChange(function (value) {
+    if (vrHelper.uniforms) {
+      vrHelper.uniforms.uSteps.value = value;
     }
-  }
-
-  return '/';
+  });
+  var alphaCorrrectionUpdate = stackFolder.add(myStack, 'alphaCorrection', 0, 1).step(0.01);
+  alphaCorrrectionUpdate.onChange(function (value) {
+    if (vrHelper.uniforms) {
+      vrHelper.uniforms.uAlphaCorrection.value = value;
+    }
+  });
+  stackFolder.add(vrHelper, 'interpolation', 0, 1).step(1);
+  stackFolder.open();
 }
+/**
+ * Init the scene
+ */
 
-function getBaseURL(url) {
-  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
-}
 
-exports.getBundleURL = getBundleURLCached;
-exports.getBaseURL = getBaseURL;
-},{}],"node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
-var bundle = require('./bundle-url');
+function init() {
+  /**
+  * Rendering loop
+  */
+  function animate() {
+    // render
+    controls.update();
 
-function updateLink(link) {
-  var newLink = link.cloneNode();
-
-  newLink.onload = function () {
-    link.remove();
-  };
-
-  newLink.href = link.href.split('?')[0] + '?' + Date.now();
-  link.parentNode.insertBefore(newLink, link.nextSibling);
-}
-
-var cssTimeout = null;
-
-function reloadCSS() {
-  if (cssTimeout) {
-    return;
-  }
-
-  cssTimeout = setTimeout(function () {
-    var links = document.querySelectorAll('link[rel="stylesheet"]');
-
-    for (var i = 0; i < links.length; i++) {
-      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
-        updateLink(links[i]);
-      }
+    if (ready) {
+      renderer.render(scene, camera);
     }
 
-    cssTimeout = null;
-  }, 50);
-}
+    stats.update(); // request new frame
 
-module.exports = reloadCSS;
-},{"./bundle-url":"node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"src/css/style.css":[function(require,module,exports) {
-var reloadCSS = require('_css_loader');
+    requestAnimationFrame(function () {
+      animate();
+    });
+  } // renderer
 
-module.hot.dispose(reloadCSS);
-module.hot.accept(reloadCSS);
-},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+
+  threeD = document.getElementById('r3d');
+  renderer = new THREE.WebGLRenderer({
+    alpha: true
+  });
+  renderer.setSize(threeD.offsetWidth, threeD.offsetHeight);
+  threeD.appendChild(renderer.domElement); // stats
+
+  stats = new Stats();
+  threeD.appendChild(stats.domElement); // scene
+
+  scene = new THREE.Scene(); // camera
+
+  camera = new THREE.PerspectiveCamera(45, threeD.offsetWidth / threeD.offsetHeight, 0.1, 100000);
+  camera.position.x = 150;
+  camera.position.y = 400;
+  camera.position.z = -350;
+  camera.up.set(-0.42, 0.86, 0.26); // controls
+
+  controls = new AMI.TrackballControl(camera, threeD);
+  controls.rotateSpeed = 5.5;
+  controls.zoomSpeed = 1.2;
+  controls.panSpeed = 0.8;
+  controls.staticMoving = true;
+  controls.dynamicDampingFactor = 0.3;
+  threeD.addEventListener('mousedown', onMouseDown, false);
+  threeD.addEventListener('mouseup', onMouseUp, false);
+  window.addEventListener('resize', onWindowResize, false); // start rendering loop
+
+  animate();
+} // init threeJS...
+
+
+init();
+var file = 'https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/training_sa_crop_pat0_transformed.nii.gz';
+var annotation = 'https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/pat0.nii.gz';
+var loader = new AMI.VolumeLoader(threeD);
+loader.load([file, annotation]).then(function () {
+  var series = loader.data[0].mergeSeries(loader.data)[0];
+  var series2 = loader.data[1].mergeSeries(loader.data)[0];
+  loader.free();
+  loader = null;
+  var stack2 = series2.stack[0];
+  vrHelper = new AMI.VolumeRenderingHelper(stack2); // scene
+
+  scene.add(vrHelper); // get first stack from series
+
+  var stack = series.stack[0];
+  vrHelper = new AMI.VolumeRenderingHelper(stack);
+  scene.add(vrHelper); // CREATE LUT
+
+  lut = new AMI.LutHelper('my-tf');
+  lut.luts = AMI.LutHelper.presetLuts();
+  lut.lutsO = AMI.LutHelper.presetLutsO(); // update related uniforms
+
+  vrHelper.uniforms.uTextureLUT.value = lut.texture;
+  vrHelper.uniforms.uLut.value = 1; // update camrea's and interactor's target
+
+  var centerLPS = stack.worldCenter();
+  camera.lookAt(centerLPS.x, centerLPS.y, centerLPS.z);
+  camera.updateProjectionMatrix();
+  controls.target.set(centerLPS.x, centerLPS.y, centerLPS.z); // create GUI
+
+  buildGUI();
+  ready = true;
+});
+},{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -393,5 +506,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js"], null)
-//# sourceMappingURL=/style.967ba849.js.map
+},{}]},{},["node_modules/parcel-bundler/src/builtins/hmr-runtime.js","src/js/lesson6.js"], null)
+//# sourceMappingURL=/lesson6.31aa1e81.js.map
