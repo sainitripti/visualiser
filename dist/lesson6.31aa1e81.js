@@ -136,7 +136,7 @@ var myStack = {
   alphaCorrection: 0.5,
   interpolation: 1
 };
-var file = 'https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/training_sa_crop_pat0_transformed.nii.gz';
+var file = 'https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/training_axial_full_pat0_transformed.nii.gz';
 var annotation = 'https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/training_axial_full_pat0-label.nii.gz';
 /**
  * Handle mouse down event
@@ -228,6 +228,8 @@ function init() {
     controls.update();
 
     if (ready) {
+      console.log(camera.position);
+      console.log(camera.up);
       renderer.render(scene, camera);
     }
 
@@ -252,10 +254,10 @@ function init() {
   scene = new THREE.Scene(); // camera
 
   camera = new THREE.PerspectiveCamera(45, threeD.offsetWidth / threeD.offsetHeight, 0.1, 100000);
-  camera.position.x = 150;
-  camera.position.y = 400;
-  camera.position.z = -350;
-  camera.up.set(-0.42, 0.86, 0.26); // controls
+  camera.position.x = -435;
+  camera.position.y = 58;
+  camera.position.z = -75;
+  camera.up.set(-0.34, 0.00, 0.67); // controls
 
   controls = new AMI.TrackballControl(camera, threeD);
   controls.rotateSpeed = 5.5;
@@ -330,7 +332,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65223" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49706" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
