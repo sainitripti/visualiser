@@ -1,4 +1,5 @@
 import LessonFourPreviewCard from './LessonFourPreviewCard.js';
+import BoxGeometryPanel from './BoxGeometryPanel.js';
 
 var boxData = {
     width: 50,
@@ -21,7 +22,7 @@ fetch("https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/box.json")
 })
 .then(data => {
   boxData = data["boxData"];   
-  //updateGeometries();
+  updateGeometries();
 });
 
 var axial = new LessonFourPreviewCard("axial-container", "axial-gui-container", "2", "20", "axial");
@@ -44,10 +45,10 @@ function render()
 }
 
 
-//updateGeometries();
+updateGeometries();
 render();
-/*
-const boxId = "l1";
+
+const boxId = "l4";
 var boxGeometryPanel = new BoxGeometryPanel(boxData,boxId);
 boxGeometryPanel.render();
 
@@ -64,4 +65,5 @@ const boxGeometryL1 = document.getElementById("boxgeometry"+boxId);
 const properties = ["width","height","depth", "rotateX", "rotateY", "rotateZ", "positionX", "positionY", "positionZ"];
 properties.forEach(property => document.getElementById(property+boxId)
   .addEventListener("change", handleBoxGeometryChange));
-*/
+
+

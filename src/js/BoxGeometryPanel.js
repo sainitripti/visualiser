@@ -259,7 +259,7 @@ export default class BoxGeometryPanel {
     input.value = this.positionZ;
     row.appendChild(input);
 
-    document.getElementById("lesson1-properties-sidebar-panel").appendChild(boxGeometry);
+    document.getElementById("properties-sidebar-panel").appendChild(boxGeometry);
 	}
 
 }

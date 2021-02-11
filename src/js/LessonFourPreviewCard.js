@@ -38,8 +38,6 @@ export default class LessonFourPreviewCard {
 
     // Create scene
     const scene = new THREE.Scene();
-    const scene2 = new THREE.Scene();
-
     
     scene.add(this.cube);
 
@@ -129,8 +127,6 @@ export default class LessonFourPreviewCard {
       controls.update();
 
       renderer.render(scene, camera);
-      //renderer.render(scene2, camera);
-      
 
       requestAnimationFrame(function() {
         animate();

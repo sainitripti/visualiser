@@ -279,7 +279,6 @@ var LessonFourPreviewCard = /*#__PURE__*/function () {
       container.appendChild(renderer.domElement); // Create scene
 
       var scene = new THREE.Scene();
-      var scene2 = new THREE.Scene();
       scene.add(this.cube); // Camera
 
       var camera = new AMI.OrthographicCamera(container.clientWidth / -2, container.clientWidth / 2, container.clientHeight / 2, container.clientHeight / -2, 0.1, 10000); // Setup controls
@@ -338,8 +337,7 @@ var LessonFourPreviewCard = /*#__PURE__*/function () {
 
       var animate = function animate() {
         controls.update();
-        renderer.render(scene, camera); //renderer.render(scene2, camera);
-
+        renderer.render(scene, camera);
         requestAnimationFrame(function () {
           animate();
         });
@@ -393,10 +391,328 @@ var LessonFourPreviewCard = /*#__PURE__*/function () {
 }();
 
 exports.default = LessonFourPreviewCard;
-},{"../utils.js":"src/utils.js"}],"src/js/lesson4.js":[function(require,module,exports) {
+},{"../utils.js":"src/utils.js"}],"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+var bundleURL = null;
+
+function getBundleURLCached() {
+  if (!bundleURL) {
+    bundleURL = getBundleURL();
+  }
+
+  return bundleURL;
+}
+
+function getBundleURL() {
+  // Attempt to find the URL of the current script and use that as the base URL
+  try {
+    throw new Error();
+  } catch (err) {
+    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
+
+    if (matches) {
+      return getBaseURL(matches[0]);
+    }
+  }
+
+  return '/';
+}
+
+function getBaseURL(url) {
+  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
+}
+
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+},{}],"node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
+var bundle = require('./bundle-url');
+
+function updateLink(link) {
+  var newLink = link.cloneNode();
+
+  newLink.onload = function () {
+    link.remove();
+  };
+
+  newLink.href = link.href.split('?')[0] + '?' + Date.now();
+  link.parentNode.insertBefore(newLink, link.nextSibling);
+}
+
+var cssTimeout = null;
+
+function reloadCSS() {
+  if (cssTimeout) {
+    return;
+  }
+
+  cssTimeout = setTimeout(function () {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+
+    for (var i = 0; i < links.length; i++) {
+      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
+        updateLink(links[i]);
+      }
+    }
+
+    cssTimeout = null;
+  }, 50);
+}
+
+module.exports = reloadCSS;
+},{"./bundle-url":"node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"src/css/properties-sidebar.css":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/js/BoxGeometryPanel.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+require("../css/properties-sidebar.css");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var BoxGeometryPanel = /*#__PURE__*/function () {
+  function BoxGeometryPanel(box, id) {
+    _classCallCheck(this, BoxGeometryPanel);
+
+    this.id = id;
+    this.width = box.width;
+    this.height = box.height;
+    this.depth = box.depth;
+    this.widthSegments = box.widthSegments;
+    this.heightSegments = box.heightSegments;
+    this.depthSegments = box.depthSegments;
+    this.rotateX = box.rotateX;
+    this.rotateY = box.rotateY;
+    this.rotateZ = box.rotateZ;
+    this.positionX = box.positionX;
+    this.positionY = box.positionY;
+    this.positionZ = box.positionZ;
+    this.loadBoxGeometry = this.loadBoxGeometry.bind(this);
+    this.saveBoxGeometry = this.saveBoxGeometry.bind(this);
+    this.render = this.render.bind(this);
+  }
+
+  _createClass(BoxGeometryPanel, [{
+    key: "loadBoxGeometry",
+    value: function loadBoxGeometry() {}
+  }, {
+    key: "saveBoxGeometry",
+    value: function saveBoxGeometry() {
+      var fileData = JSON.stringify({
+        "boxData": {
+          "width": this.width,
+          "height": this.height,
+          "depth": this.depth,
+          "widthSegments": this.widthSegments,
+          "heightSegments": this.heightSegments,
+          "depthSegments": this.depthSegments,
+          "rotateX": this.rotateX,
+          "rotateY": this.rotateY,
+          "rotateZ": this.rotateZ,
+          "positionX": this.positionX,
+          "positionY": this.positionY,
+          "positionZ": this.positionZ
+        }
+      });
+      var blob = new Blob([fileData], {
+        type: "text/plain"
+      });
+      var url = URL.createObjectURL(blob);
+      var link = document.createElement('a');
+      link.download = 'box.json';
+      link.href = url;
+      link.click();
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var boxGeometry = document.createElement("div");
+      boxGeometry.id = "boxgeometry" + this.id; // Create a span child to this div
+
+      var span = document.createElement("span");
+      boxGeometry.appendChild(span); // Create a panel with box width, height and depth
+
+      var panel = document.createElement("div");
+      panel.className = "Panel";
+      span.appendChild(panel); // Width row
+
+      var row = document.createElement("div");
+      row.className = "Row";
+      panel.appendChild(row);
+      var textHeading = document.createElement("span");
+      textHeading.className = "Text";
+      textHeading.classList.add("Heading");
+      textHeading.innerHTML = "Box Dimensions";
+      row.appendChild(textHeading);
+      var text = document.createElement("span");
+      text.className = "Text";
+      text.innerHTML = "width";
+      row.appendChild(text);
+      var input = document.createElement("input");
+      input.setAttribute("type", "number");
+      input.className = "Input";
+      input.id = "width" + this.id;
+      input.value = this.width;
+      row.appendChild(input); // Height row
+
+      row = document.createElement("div");
+      row.className = "Row";
+      panel.appendChild(row);
+      text = document.createElement("span");
+      text.className = "Text";
+      text.innerHTML = "height";
+      row.appendChild(text);
+      input = document.createElement("input");
+      input.setAttribute("type", "number");
+      input.className = "Input";
+      input.id = "height" + this.id;
+      input.value = this.height;
+      row.appendChild(input); // Depth row
+
+      row = document.createElement("div");
+      row.className = "Row";
+      panel.appendChild(row);
+      text = document.createElement("span");
+      text.className = "Text";
+      text.innerHTML = "depth";
+      row.appendChild(text);
+      input = document.createElement("input");
+      input.setAttribute("type", "number");
+      input.className = "Input";
+      input.id = "depth" + this.id;
+      input.value = this.depth;
+      row.appendChild(input); // Create a panel with box rotation along X axis, Y axis and Z axis
+
+      panel = document.createElement("div");
+      panel.className = "Panel";
+      span.appendChild(panel); // ROtate X row
+
+      row = document.createElement("div");
+      row.className = "Row";
+      panel.appendChild(row);
+      textHeading = document.createElement("span");
+      textHeading.className = "Text";
+      textHeading.classList.add("Heading");
+      textHeading.innerHTML = "Box Rotation";
+      row.appendChild(textHeading);
+      text = document.createElement("span");
+      text.className = "Text";
+      text.innerHTML = "x";
+      row.appendChild(text);
+      input = document.createElement("input");
+      input.setAttribute("type", "number");
+      input.setAttribute("min", 0);
+      input.setAttribute("max", 360);
+      input.className = "Input";
+      input.id = "rotateX" + this.id;
+      input.value = this.rotateX;
+      row.appendChild(input); // Rotate Y row
+
+      row = document.createElement("div");
+      row.className = "Row";
+      panel.appendChild(row);
+      text = document.createElement("span");
+      text.className = "Text";
+      text.innerHTML = "y";
+      row.appendChild(text);
+      input = document.createElement("input");
+      input.setAttribute("type", "number");
+      input.setAttribute("min", 0);
+      input.setAttribute("max", 360);
+      input.className = "Input";
+      input.id = "rotateY" + this.id;
+      input.value = this.rotateY;
+      row.appendChild(input); // Rotate Z row
+
+      row = document.createElement("div");
+      row.className = "Row";
+      panel.appendChild(row);
+      text = document.createElement("span");
+      text.className = "Text";
+      text.innerHTML = "z";
+      row.appendChild(text);
+      input = document.createElement("input");
+      input.setAttribute("type", "number");
+      input.setAttribute("min", 0);
+      input.setAttribute("max", 360);
+      input.className = "Input";
+      input.id = "rotateZ" + this.id;
+      input.value = this.rotateZ;
+      row.appendChild(input); // Create a panel with box position along X axis, Y axis and Z axis
+
+      panel = document.createElement("div");
+      panel.className = "Panel";
+      span.appendChild(panel); // Position X row
+
+      row = document.createElement("div");
+      row.className = "Row";
+      panel.appendChild(row);
+      textHeading = document.createElement("span");
+      textHeading.className = "Text";
+      textHeading.classList.add("Heading");
+      textHeading.innerHTML = "Box Position";
+      row.appendChild(textHeading);
+      text = document.createElement("span");
+      text.className = "Text";
+      text.innerHTML = "x";
+      row.appendChild(text);
+      input = document.createElement("input");
+      input.setAttribute("type", "number");
+      input.className = "Input";
+      input.id = "positionX" + this.id;
+      input.value = this.positionX;
+      row.appendChild(input); // Position Y row
+
+      row = document.createElement("div");
+      row.className = "Row";
+      panel.appendChild(row);
+      text = document.createElement("span");
+      text.className = "Text";
+      text.innerHTML = "y";
+      row.appendChild(text);
+      input = document.createElement("input");
+      input.setAttribute("type", "number");
+      input.className = "Input";
+      input.id = "positionY" + this.id;
+      input.value = this.positionY;
+      row.appendChild(input); // Position Z row
+
+      row = document.createElement("div");
+      row.className = "Row";
+      panel.appendChild(row);
+      text = document.createElement("span");
+      text.className = "Text";
+      text.innerHTML = "z";
+      row.appendChild(text);
+      input = document.createElement("input");
+      input.setAttribute("type", "number");
+      input.className = "Input";
+      input.id = "positionZ" + this.id;
+      input.value = this.positionZ;
+      row.appendChild(input);
+      document.getElementById("properties-sidebar-panel").appendChild(boxGeometry);
+    }
+  }]);
+
+  return BoxGeometryPanel;
+}();
+
+exports.default = BoxGeometryPanel;
+},{"../css/properties-sidebar.css":"src/css/properties-sidebar.css"}],"src/js/lesson4.js":[function(require,module,exports) {
 "use strict";
 
 var _LessonFourPreviewCard = _interopRequireDefault(require("./LessonFourPreviewCard.js"));
+
+var _BoxGeometryPanel = _interopRequireDefault(require("./BoxGeometryPanel.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -417,7 +733,8 @@ var boxData = {
 fetch("https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/box.json").then(function (response) {
   return response.json();
 }).then(function (data) {
-  boxData = data["boxData"]; //updateGeometries();
+  boxData = data["boxData"];
+  updateGeometries();
 });
 var axial = new _LessonFourPreviewCard.default("axial-container", "axial-gui-container", "2", "20", "axial");
 var sagittal = new _LessonFourPreviewCard.default("sagittal-container", "sagittal-gui-container", "0", "40", "sagittal");
@@ -433,30 +750,28 @@ function render() {
   axial.run();
   sagittal.run();
   coronal.run();
-} //updateGeometries();
+}
 
-
+updateGeometries();
 render();
-/*
-const boxId = "l1";
-var boxGeometryPanel = new BoxGeometryPanel(boxData,boxId);
+var boxId = "l4";
+var boxGeometryPanel = new _BoxGeometryPanel.default(boxData, boxId);
 boxGeometryPanel.render();
 
-function handleBoxGeometryChange(e)
-{
+function handleBoxGeometryChange(e) {
   // Remove boxId appended at end of each Id
-  var property = e.target.id.slice(0,-boxId.length);
-  //Update boxData
+  var property = e.target.id.slice(0, -boxId.length); //Update boxData
+
   boxData[property] = e.target.value;
   updateGeometries();
 }
 
-const boxGeometryL1 = document.getElementById("boxgeometry"+boxId);
-const properties = ["width","height","depth", "rotateX", "rotateY", "rotateZ", "positionX", "positionY", "positionZ"];
-properties.forEach(property => document.getElementById(property+boxId)
-  .addEventListener("change", handleBoxGeometryChange));
-*/
-},{"./LessonFourPreviewCard.js":"src/js/LessonFourPreviewCard.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+var boxGeometryL1 = document.getElementById("boxgeometry" + boxId);
+var properties = ["width", "height", "depth", "rotateX", "rotateY", "rotateZ", "positionX", "positionY", "positionZ"];
+properties.forEach(function (property) {
+  return document.getElementById(property + boxId).addEventListener("change", handleBoxGeometryChange);
+});
+},{"./LessonFourPreviewCard.js":"src/js/LessonFourPreviewCard.js","./BoxGeometryPanel.js":"src/js/BoxGeometryPanel.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -484,7 +799,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61256" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61608" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
