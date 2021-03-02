@@ -62,7 +62,7 @@ function init() {
 	// texture
 
 	const textureLoader = new THREE.TextureLoader( manager );
-	const texture = textureLoader.load( 'textures/uv_grid_opengl.jpg' );
+	const texture = textureLoader.load( 'https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/uv_grid_opengl.jpg' );
 
 	// model
 
@@ -80,7 +80,7 @@ function init() {
 	function onError() {}
 
 	const loader = new OBJLoader( manager );
-	loader.load( 'models/obj/male02/male02.obj', function ( obj ) {
+	loader.load( 'https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/obj/1.obj', function ( obj ) {
 
 		object = obj;
 

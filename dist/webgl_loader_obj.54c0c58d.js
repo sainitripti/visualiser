@@ -35911,7 +35911,7 @@ function init() {
 
 
   var textureLoader = new THREE.TextureLoader(manager);
-  var texture = textureLoader.load('textures/uv_grid_opengl.jpg'); // model
+  var texture = textureLoader.load('https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/uv_grid_opengl.jpg'); // model
 
   function onProgress(xhr) {
     if (xhr.lengthComputable) {
@@ -35923,7 +35923,7 @@ function init() {
   function onError() {}
 
   var loader = new _OBJLoader.OBJLoader(manager);
-  loader.load('models/obj/male02/male02.obj', function (obj) {
+  loader.load('https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/obj/1.obj', function (obj) {
     object = obj;
   }, onProgress, onError); //
 
@@ -35989,7 +35989,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63734" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63983" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
