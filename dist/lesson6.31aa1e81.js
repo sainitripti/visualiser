@@ -258,7 +258,7 @@ function init() {
   camera.up.set(-0.34, 0.00, 0.67); // controls
 
   controls = new AMI.TrackballControl(camera, threeD);
-  controls.rotateSpeed = 5.5;
+  controls.rotateSpeed = 0.5;
   controls.zoomSpeed = 1.2;
   controls.panSpeed = 0.8;
   controls.staticMoving = true;
@@ -330,7 +330,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56396" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63734" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -151,7 +151,7 @@ function init() {
 
     // controls
     controls = new AMI.TrackballControl(camera, threeD);
-    controls.rotateSpeed = 5.5;
+    controls.rotateSpeed = 0.5;
     controls.zoomSpeed = 1.2;
     controls.panSpeed = 0.8;
     controls.staticMoving = true;
