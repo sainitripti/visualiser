@@ -134,12 +134,12 @@ function init() {
 	function onError() {}
 
 	const loader = new OBJLoader( manager );
-	loader.load( 'https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/obj/11.obj', function ( obj ) {
+	loader.load( 'https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/11.obj', function ( obj ) {
 
 		object = obj;
 
 	}, onProgress, onError );
-	loader.load( 'https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/obj/22.obj', function ( obj ) {
+	loader.load( 'https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/22.obj', function ( obj ) {
 
 		object2 = obj;
 

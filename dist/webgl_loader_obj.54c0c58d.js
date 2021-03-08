@@ -36538,10 +36538,10 @@ function init() {
   function onError() {}
 
   var loader = new _OBJLoader.OBJLoader(manager);
-  loader.load('https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/obj/11.obj', function (obj) {
+  loader.load('https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/11.obj', function (obj) {
     object = obj;
   }, onProgress, onError);
-  loader.load('https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/obj/22.obj', function (obj) {
+  loader.load('https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/22.obj', function (obj) {
     object2 = obj;
   }, onProgress, onError);
   loader.load('https://ghcdn.rawgit.org/sainitripti/visualiser/master/data/obj/3.obj', function (obj) {
@@ -36624,7 +36624,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52139" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50092" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
